@@ -1,0 +1,248 @@
+Hello I have a modem Huawei E3531 from the company O2 in Germany which is not being properly setup on my Linux Desktop ( Debian 8 ). So far I have detected that usb_modeswitch recognize the hardware and adds two modem devices /dev/ttyUSB0 and /dev/ttyUSB1 using a generic usbserial driver. The problem is that wvdial is not able to connect to the USB Serial on any baudrate. It seems that the way the modem interacts with the Operating System has changed. There are also present on dmesg some segfaults messages which makes me think that usb_modeswitch is having some issues with this hardware. I paste the messages I receive on all the tests I have done so far.
+
+Dmesg: (Seems it detects firs a Storage device and after some retries it goes to the Modem device)
+[code]
+[Aug15 11:37] usb 2-4: new high-speed USB device number 14 using xhci_hcd
+[  +0.129958] usb 2-4: New USB device found, idVendor=12d1, idProduct=157d
+[  +0.000006] usb 2-4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[  +0.000003] usb 2-4: Product: HUAWEI Mobile
+[  +0.000002] usb 2-4: Manufacturer: HUAWEI
+[  +0.000002] usb 2-4: SerialNumber: FFFFFFFFFFFFFFFF
+[  +0.020630] usb-storage 2-4:1.0: USB Mass Storage device detected
+[  +0.000220] scsi15 : usb-storage 2-4:1.0
+[  +0.536634] usb 2-4: usbfs: interface 0 claimed by usb-storage while 'usb_modeswitch' sets config #2
+[  +0.053728] usb usb2-port4: disabled by hub (EMI?), re-enabling...
+[  +0.000008] usb 2-4: USB disconnect, device number 14
+[  +2.805824] ideapad_laptop: Unknown event: 1
+[  +2.193661] cdc_mbim 2-4:2.0: SET_NTB_FORMAT failed
+[  +0.000595] cdc_mbim 2-4:2.0: bind() failure
+[  +0.000361] usb-storage 2-4:2.2: USB Mass Storage device detected
+[  +0.000263] scsi16 : usb-storage 2-4:2.2
+[  +0.000281] usb_modeswitch[3257]: segfault at fffffffffffffffc ip 00007f1533f05664 sp 00007ffc71055508 error 5 in libc-2.19.so[7f1533e89000+19f000]
+[  +0.246712] usb 2-4: new high-speed USB device number 15 using xhci_hcd
+[  +0.129977] usb 2-4: New USB device found, idVendor=12d1, idProduct=157d
+[  +0.000005] usb 2-4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[  +0.000002] usb 2-4: Product: HUAWEI Mobile
+[  +0.000001] usb 2-4: Manufacturer: HUAWEI
+[  +0.000002] usb 2-4: SerialNumber: FFFFFFFFFFFFFFFF
+[  +0.001134] usb-storage 2-4:1.0: USB Mass Storage device detected
+[  +0.000197] scsi17 : usb-storage 2-4:1.0
+[  +0.545030] usb 2-4: usbfs: interface 0 claimed by usb-storage while 'usb_modeswitch' sets config #2
+[  +0.048689] usb usb2-port4: disabled by hub (EMI?), re-enabling...
+[  +0.000009] usb 2-4: USB disconnect, device number 15
+[  +4.999614] cdc_mbim 2-4:2.0: SET_NTB_FORMAT failed
+[  +0.000586] cdc_mbim 2-4:2.0: bind() failure
+[  +0.000362] usb-storage 2-4:2.2: USB Mass Storage device detected
+[  +0.000246] scsi18 : usb-storage 2-4:2.2
+[  +0.000255] usb_modeswitch[3306]: segfault at fffffffffffffffc ip 00007f97f80c8664 sp 00007fff38786f48 error 5 in libc-2.19.so[7f97f804c000+19f000]
+[  +0.242723] usb 2-4: new high-speed USB device number 16 using xhci_hcd
+[  +0.130039] usb 2-4: New USB device found, idVendor=12d1, idProduct=157d
+[  +0.000005] usb 2-4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[  +0.000002] usb 2-4: Product: HUAWEI Mobile
+[  +0.000002] usb 2-4: Manufacturer: HUAWEI
+[  +0.000002] usb 2-4: SerialNumber: FFFFFFFFFFFFFFFF
+[  +0.004528] usb-storage 2-4:1.0: USB Mass Storage device detected
+[  +0.000232] scsi19 : usb-storage 2-4:1.0
+[  +0.541347] usb 2-4: usbfs: interface 0 claimed by usb-storage while 'usb_modeswitch' sets config #2
+[  +0.049457] usb usb2-port4: disabled by hub (EMI?), re-enabling...
+[  +0.000008] usb 2-4: USB disconnect, device number 16
+[  +5.003073] cdc_mbim 2-4:2.0: SET_NTB_FORMAT failed
+[  +0.000592] cdc_mbim 2-4:2.0: bind() failure
+[  +0.000477] usb-storage 2-4:2.2: USB Mass Storage device detected
+[  +0.000243] scsi20 : usb-storage 2-4:2.2
+[  +0.000281] usb_modeswitch[3358]: segfault at fffffffffffffffc ip 00007fd3e10ba664 sp 00007ffddd7fab68 error 5 in libc-2.19.so[7fd3e103e000+19f000]
+[  +0.242596] usb 2-4: new high-speed USB device number 17 using xhci_hcd
+[  +0.129942] usb 2-4: New USB device found, idVendor=12d1, idProduct=157d
+[  +0.000005] usb 2-4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[  +0.000002] usb 2-4: Product: HUAWEI Mobile
+[  +0.000001] usb 2-4: Manufacturer: HUAWEI
+[  +0.000002] usb 2-4: SerialNumber: FFFFFFFFFFFFFFFF
+[  +0.002611] usb-storage 2-4:1.0: USB Mass Storage device detected
+[  +0.000093] scsi21 : usb-storage 2-4:1.0
+[  +0.531301] usb 2-4: usbfs: interface 0 claimed by usb-storage while 'usb_modeswitch' sets config #2
+[  +0.050105] usb usb2-port4: disabled by hub (EMI?), re-enabling...
+[  +0.000007] usb 2-4: USB disconnect, device number 17
+[  +5.002587] cdc_mbim 2-4:2.0: SET_NTB_FORMAT failed
+[  +0.000605] cdc_mbim 2-4:2.0: bind() failure
+[  +0.000379] usb-storage 2-4:2.2: USB Mass Storage device detected
+[  +0.000197] scsi22 : usb-storage 2-4:2.2
+[  +0.000282] usb_modeswitch[3410]: segfault at fffffffffffffffc ip 00007f359cf33664 sp 00007ffc4f769738 error 5 in libc-2.19.so[7f359ceb7000+19f000]
+[  +0.246726] usb 2-4: new high-speed USB device number 18 using xhci_hcd
+[  +0.130154] usb 2-4: New USB device found, idVendor=12d1, idProduct=157d
+[  +0.000009] usb 2-4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[  +0.000005] usb 2-4: Product: HUAWEI Mobile
+[  +0.000004] usb 2-4: Manufacturer: HUAWEI
+[  +0.000003] usb 2-4: SerialNumber: FFFFFFFFFFFFFFFF
+[  +0.009013] usb-storage 2-4:1.0: USB Mass Storage device detected
+[  +0.000283] scsi23 : usb-storage 2-4:1.0
+[  +0.567891] usb 2-4: usbfs: interface 0 claimed by usb-storage while 'usb_modeswitch' sets config #2
+[  +0.051458] usb usb2-port4: disabled by hub (EMI?), re-enabling...
+[  +0.000007] usb 2-4: USB disconnect, device number 18
+[  +0.153249] ideapad_laptop: Unknown event: 1
+[  +4.848644] cdc_mbim 2-4:2.0: SET_NTB_FORMAT failed
+[  +0.000601] cdc_mbim 2-4:2.0: bind() failure
+[  +0.000396] usb-storage 2-4:2.2: USB Mass Storage device detected
+[  +0.000255] scsi24 : usb-storage 2-4:2.2
+[  +0.000322] usb_modeswitch[3465]: segfault at fffffffffffffffc ip 00007ff47b637664 sp 00007ffe2c41be68 error 5 in libc-2.19.so[7ff47b5bb000+19f000]
+[  +0.246637] usb 2-4: new high-speed USB device number 19 using xhci_hcd
+[  +0.129954] usb 2-4: New USB device found, idVendor=12d1, idProduct=157d
+[  +0.000004] usb 2-4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[  +0.000002] usb 2-4: Product: HUAWEI Mobile
+[  +0.000002] usb 2-4: Manufacturer: HUAWEI
+[  +0.000002] usb 2-4: SerialNumber: FFFFFFFFFFFFFFFF
+[  +0.029243] usb-storage 2-4:1.0: USB Mass Storage device detected
+[  +0.000267] scsi25 : usb-storage 2-4:1.0
+[  +0.547813] usb 2-4: usbfs: interface 0 claimed by usb-storage while 'usb_modeswitch' sets config #2
+[  +0.051712] usb usb2-port4: disabled by hub (EMI?), re-enabling...
+[  +0.000020] usb 2-4: USB disconnect, device number 19
+[  +5.001627] cdc_mbim 2-4:2.0: SET_NTB_FORMAT failed
+[  +0.000549] cdc_mbim 2-4:2.0: bind() failure
+[  +0.000206] usb-storage 2-4:2.2: USB Mass Storage device detected
+[  +0.000115] scsi26 : usb-storage 2-4:2.2
+[  +0.000155] usb_modeswitch[3515]: segfault at fffffffffffffffc ip 00007f34c313d664 sp 00007fff3a1e5d48 error 5 in libc-2.19.so[7f34c30c1000+19f000]
+[  +0.239182] usb 2-4: new high-speed USB device number 20 using xhci_hcd
+[  +0.128885] usb 2-4: New USB device found, idVendor=12d1, idProduct=1568
+[  +0.000004] usb 2-4: New USB device strings: Mfr=2, Product=1, SerialNumber=0
+[  +0.000002] usb 2-4: Product: HUAWEI Mobile
+[  +0.000002] usb 2-4: Manufacturer: HUAWEI Technology
+[  +0.000922] option 2-4:1.0: GSM modem (1-port) converter detected
+[  +0.000087] usb 2-4: GSM modem (1-port) converter now attached to ttyUSB0
+[  +0.000077] option 2-4:1.1: GSM modem (1-port) converter detected
+[  +0.000081] usb 2-4: GSM modem (1-port) converter now attached to ttyUSB1
+[/code]
+
+It seems two new Modem devices has been added to the system. But if I try wdvial to generate a configuration file, it just can't communicate with the modem.
+
+[code]
+➜  ~  sudo wvdialconf 
+Editing `/etc/wvdial.conf'.
+
+Scanning your serial ports for a modem.
+
+Modem Port Scan<*1>: S0   S1   S2   S3   
+ttyUSB0<*1>: ATQ0 V1 E1 -- failed with 2400 baud, next try: 9600 baud
+ttyUSB0<*1>: ATQ0 V1 E1 -- failed with 9600 baud, next try: 9600 baud
+ttyUSB0<*1>: ATQ0 V1 E1 -- and failed too at 115200, giving up.
+ttyUSB1<*1>: ATQ0 V1 E1 -- failed with 2400 baud, next try: 9600 baud
+ttyUSB1<*1>: ATQ0 V1 E1 -- failed with 9600 baud, next try: 9600 baud
+ttyUSB1<*1>: ATQ0 V1 E1 -- and failed too at 115200, giving up.
+
+
+Sorry, no modem was detected!  Is it in use by another program?
+Did you configure it properly with setserial?
+
+Please read the FAQ at http://alumnit.ca/wiki/?WvDial
+[/code]
+
+Following you have the USB peripheral information
+[code]
+➜  ~  sudo lsusb -d 12d1:1568
+Bus 002 Device 020: ID 12d1:1568 Huawei Technologies Co., Ltd. 
+➜  ~  sudo lsusb -d 12d1:1568 -v
+
+Bus 002 Device 020: ID 12d1:1568 Huawei Technologies Co., Ltd. 
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.00
+  bDeviceClass            0 (Defined at Interface level)
+  bDeviceSubClass         0 
+  bDeviceProtocol         0 
+  bMaxPacketSize0        64
+  idVendor           0x12d1 Huawei Technologies Co., Ltd.
+  idProduct          0x1568 
+  bcdDevice            1.02
+  iManufacturer           2 HUAWEI Technology
+  iProduct                1 HUAWEI Mobile
+  iSerial                 0 
+  bNumConfigurations      1
+  Configuration Descriptor:
+    bLength                 9
+    bDescriptorType         2
+    wTotalLength           95
+    bNumInterfaces          2
+    bConfigurationValue     1
+    iConfiguration          0 
+    bmAttributes         0xc0
+      Self Powered
+    MaxPower              500mA
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        0
+      bAlternateSetting       0
+      bNumEndpoints           2
+      bInterfaceClass       255 Vendor Specific Class
+      bInterfaceSubClass    255 Vendor Specific Subclass
+      bInterfaceProtocol    255 Vendor Specific Protocol
+      iInterface              0 
+      ** UNRECOGNIZED:  05 24 00 10 01
+      ** UNRECOGNIZED:  04 24 02 02
+      ** UNRECOGNIZED:  05 24 01 00 00
+      ** UNRECOGNIZED:  06 24 06 00 00 00
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x81  EP 1 IN
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0200  1x 512 bytes
+        bInterval              32
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x01  EP 1 OUT
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0200  1x 512 bytes
+        bInterval              32
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        1
+      bAlternateSetting       0
+      bNumEndpoints           2
+      bInterfaceClass       255 Vendor Specific Class
+      bInterfaceSubClass    255 Vendor Specific Subclass
+      bInterfaceProtocol    255 Vendor Specific Protocol
+      iInterface              0 
+      ** UNRECOGNIZED:  05 24 00 10 01
+      ** UNRECOGNIZED:  04 24 02 02
+      ** UNRECOGNIZED:  05 24 01 00 01
+      ** UNRECOGNIZED:  06 24 06 01 01 01
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x82  EP 2 IN
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0200  1x 512 bytes
+        bInterval              32
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x02  EP 2 OUT
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0200  1x 512 bytes
+        bInterval              32
+Device Qualifier (for other device speed):
+  bLength                10
+  bDescriptorType         6
+  bcdUSB               2.00
+  bDeviceClass            0 (Defined at Interface level)
+  bDeviceSubClass         0 
+  bDeviceProtocol         0 
+  bMaxPacketSize0        64
+  bNumConfigurations      1
+[/code]
+
+
